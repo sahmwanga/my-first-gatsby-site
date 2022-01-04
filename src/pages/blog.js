@@ -5,8 +5,8 @@ import { graphql } from 'gatsby';
 function BlogPage({ data }) {
   return (
     <Layout pageTitle="My Blog Posts">
-      {data.allFile.nodes.map((post) => (
-        <li key={post.name}>{post.name}</li>
+      {data.allContentfulBlog.edges.map((edge) => (
+        <pre>{JSON.stringify(edge, null, 2)}</pre>
       ))}
     </Layout>
   );
@@ -14,9 +14,16 @@ function BlogPage({ data }) {
 
 export const query = graphql`
   query {
-    allFile {
-      nodes {
-        name
+    allContentfulBlog(sort: { fields: contentful_id }) {
+      edges {
+        node {
+          id
+          title
+          content {
+            raw
+          }
+          updatedAt
+        }
       }
     }
   }
